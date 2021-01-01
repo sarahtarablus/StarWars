@@ -70,8 +70,6 @@ const addNewTodo = (e) => {
 }
 
 addBtn.addEventListener('click', addNewTodo);
-
-//list.addEventListener('click', crossTask);
 //clearBtn.addEventListener('click', clearTasks);
 
 const displaySavedTodos = () => {
