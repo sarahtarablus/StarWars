@@ -22,7 +22,7 @@ body{
   color: white;
 }
 
-#new-task {
+#new-todo {
   background-color: rgb(250, 209, 241);
   color: white;
   border-radius: 3px;
@@ -33,7 +33,7 @@ body{
   margin: 50px;
 }
 
-#addTask-btn {
+#addTodo-btn {
   position: absolute;
   margin-left: 305px;
   margin-top: 50px;
