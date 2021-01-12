@@ -7,8 +7,7 @@ let isMilitary;
 
 function newDate(){
   const date = new Date();
-  const currentDate = document.getElementById('date')
-  
+  const currentDate = document.getElementById('date');
   const month = date.toLocaleString('default', { month: 'long'});
   const weekDay = date.toLocaleString('default', { weekDay: 'long'});
   const day = date.getDate();
