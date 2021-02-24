@@ -95,7 +95,7 @@ class StarWarsPage extends Component {
             let characters = this.state.characters;
             characters.unshift(char)      
             this.setState({characters: characters})
-            window.render()
+
          }
         })
      this.limitNumberOfCharactersDisplayed();
