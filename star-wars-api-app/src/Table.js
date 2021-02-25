@@ -17,7 +17,6 @@ class Table extends Component {
           </thead>
           <tbody className='text-white'>
             {this.props.data}
-            {this.props.data2}
           </tbody>
         </table>
       </div>

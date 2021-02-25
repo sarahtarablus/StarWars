@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Input from './Input.js';
-import SearchButton from './SearchButton.js';
+import SearchButton from './Button.js';
 import Table from './Table.js';
 import axios from 'axios';
 
@@ -95,7 +95,7 @@ class StarWarsPage extends Component {
             let characters = this.state.characters;
             characters.unshift(char)      
             this.setState({characters: characters})
-
+        
          }
         })
      this.limitNumberOfCharactersDisplayed();
