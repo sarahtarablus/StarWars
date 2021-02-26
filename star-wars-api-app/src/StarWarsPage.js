@@ -14,7 +14,8 @@ class StarWarsPage extends Component {
     this.state = {
      input : '',
      characters: [],
-     newCharacters: []
+     newCharacters: [],
+     isLoaded: false
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -29,6 +30,53 @@ class StarWarsPage extends Component {
   componentDidMount () {
     this.showPage(1)
   } 
+
+
+
+    
+  showPage(value) {
+    try {
+     const url = `https://swapi.dev/api/people/?page=${value}`
+      ;(async () => {
+      const page = await axios.get(url).then(res => res.data.results)
+
+       for(const character of page){
+         const homeworldURL = character.homeworld
+         const homeworldRes = await axios.get(homeworldURL).then(res => res.data.name)
+         character.homeworld = [homeworldRes]
+         if(character.species.length !== 0){
+          const speciesURL = character.species;
+          const speciesRes = await axios.get(speciesURL).then(res => res.data.name)
+          character.species = [speciesRes]
+         }else{
+           character.species = 'Human'
+         }
+       }
+       this.setState({characters: [...page],
+                      isLoaded: true})
+      })() 
+    } catch (err) {
+    console.error(err);
+    }
+  }
+
+
+
+
+
+  searchCharacter (e) {
+    e.preventDefault();
+    let input = this.state.input;
+    if(input === ''){
+      console.log('ops')
+    }else{
+      if(this.state.isLoaded){
+        this.setState({isLoaded: false})
+      }
+      this.getNewCharacters()
+    }
+  }
+    
 
 
  
@@ -66,7 +114,9 @@ class StarWarsPage extends Component {
                 char.pop()
               }
               this.setState({newCharacters : char,
-                            characters : this.state.newCharacters})
+                            characters : this.state.newCharacters,
+                            isLoaded: true
+                            })
               return;     
         }  
       }
@@ -78,17 +128,16 @@ class StarWarsPage extends Component {
 
 
 
-  searchCharacter (e) {
+  changePageCount(e) {
     e.preventDefault();
-    let input = this.state.input;
-    if(input === ''){
-      console.log('ops')
-    }else{
-      this.getNewCharacters()
+    if(this.state.isLoaded){
+      this.setState({isLoaded: false})
     }
+    this.showPage(e.target.value)
   }
-    
-  
+
+
+
 
   handleInputChange (e) {
     e.preventDefault();
@@ -107,41 +156,9 @@ class StarWarsPage extends Component {
 
 
 
-  changePageCount(e) {
-    e.preventDefault();
-    this.showPage(e.target.value)
-  }
-
-
-  
-  showPage(value) {
-    try {
-     const url = `https://swapi.dev/api/people/?page=${value}`
-      ;(async () => {
-      const page = await axios.get(url).then(res => res.data.results)
-
-       for(const character of page){
-         const homeworldURL = character.homeworld
-         const homeworldRes = await axios.get(homeworldURL).then(res => res.data.name)
-         character.homeworld = [homeworldRes]
-         if(character.species.length !== 0){
-          const speciesURL = character.species;
-          const speciesRes = await axios.get(speciesURL).then(res => res.data.name)
-          character.species = [speciesRes]
-         }else{
-           character.species = 'Human'
-         }
-       }
-       this.setState({characters: [...page]})
-      })() 
-    } catch (err) {
-    console.error(err);
-    }
-  }
-
-
 
   render () {
+    const {isLoaded} = this.state;
      return (
       <div>
         <div className='text-warning mt-5 w-75 border border-white rounded mx-auto'>
@@ -152,7 +169,7 @@ class StarWarsPage extends Component {
           </form>
         </div>
         <div className='text-white'>
-         <Table data={this.state.characters.map((char, i) => {
+          {isLoaded ?  <Table data={this.state.characters.map((char, i) => {
             return(
               <tr key={i}>
                 <td>{char.name}</td>
@@ -162,7 +179,8 @@ class StarWarsPage extends Component {
                 <td>{char.homeworld}</td>
                 <td>{char.species}</td>
               </tr>
-         )})}/>
+         )})}/> : <div className='d-flex justify-content-center m-5'>Loading...</div>}
+        
        </div>
        <div>
          <ButtonPageChange onClick={this.changePageCount} ></ButtonPageChange>
