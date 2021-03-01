@@ -19,6 +19,7 @@ class StarWarsPage extends Component {
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.sendSearchRequest = this.sendSearchRequest.bind(this);
     this.changePageCount = this.changePageCount.bind(this);
     this.showPage = this.showPage.bind(this);
     this.searchCharacter = this.searchCharacter.bind(this);
@@ -63,26 +64,31 @@ class StarWarsPage extends Component {
 
 
 
+  handleInputChange (e) {
+    e.preventDefault();
+    this.setState({input: e.target.value}) 
+    console.log(this.state.input)
+  }
+
+
   searchCharacter (e) {
     e.preventDefault();
-    this.setState({input: e.target.value})
-    if(e.target.value === ''){
+    if(this.state.input === ''){
       this.showPage(1)
-      console.log('no')
     }else{
       if(this.state.isLoaded){
         this.setState({isLoaded: false,
                        newCharacters: [],
                       characters: []})
       }
-      this.handleInputChange()
+      this.sendSearchRequest()
     }
   }
 
 
 
 
- handleInputChange = 
+ sendSearchRequest = 
   async () => {
       try{
         const page1 = await axios.get('https://swapi.dev/api/people/?page=1').then(res => res.data.results)
@@ -115,8 +121,7 @@ class StarWarsPage extends Component {
            
           let newCharacters = this.state.newCharacters;
           newCharacters.push(character);
-          const characters = [...new Map(newCharacters.map(char => [char.name, char])).values()]
-          this.setState({characters: [...characters]})
+          this.setState({characters: [...newCharacters]})
         }
       }   
         this.setState({isLoaded: true})
@@ -154,8 +159,8 @@ class StarWarsPage extends Component {
         <div className='text-warning mt-5 w-75 border border-white rounded mx-auto'>
           <h1 className='d-flex justify-content-center display-3'>STAR WARS</h1>
           <form className='form'>
-           <Input onChange={this.searchCharacter} onClick={this.resetInputValue}/>
-           {/* <SearchButton /> */}
+           <Input onChange={this.handleInputChange} onClick={this.resetInputValue}/>
+           <SearchButton onClick={this.searchCharacter}/>
           </form>
         </div>
         <div className='text-white'>
