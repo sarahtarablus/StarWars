@@ -14,7 +14,6 @@ class StarWarsPage extends Component {
     this.state = {
      input : '',
      characters: [],
-     newCharacters: [],
      isLoaded: false
     }
 
@@ -119,9 +118,9 @@ class StarWarsPage extends Component {
            
           if(character.name.toLowerCase().startsWith((this.state.input).toLowerCase()) == true && this.state.input !== ''){
            
-          let newCharacters = this.state.newCharacters;
-          newCharacters.push(character);
-          this.setState({characters: [...newCharacters]})
+          let characters = this.state.characters;
+          characters.push(character);
+          this.setState({characters: [...characters]})
         }
       }   
         this.setState({isLoaded: true})
