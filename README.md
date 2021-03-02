@@ -2,7 +2,7 @@
 
  *Star Wars Api App written with React, HTML and CSS* <br>
 
- Check out the app [here]() 
+ Check out the app [here](https://apistar-wars.herokuapp.com/) 
 
 ### Expense Tracker React
 ![StarWarsApp](src/images/StarWars.png) 
