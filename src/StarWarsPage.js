@@ -43,11 +43,15 @@ class StarWarsPage extends Component {
 
        for(const character of page){
          const homeworldURL = character.homeworld
-         const homeworldRes = await axios.get(homeworldURL).then(res => res.data.name)
+         const newHomeworldURL = homeworldURL.replace("http", "https")
+         console.log(newHomeworldURL)
+         const homeworldRes = await axios.get(newHomeworldURL).then(res => res.data.name)
          character.homeworld = [homeworldRes]
          if(character.species.length !== 0){
           const speciesURL = character.species;
-          const speciesRes = await axios.get(speciesURL).then(res => res.data.name)
+          const speciesURLstring = speciesURL.toString()
+          const newSpeciesURL = speciesURLstring.replace("http", "https")
+          const speciesRes = await axios.get(newSpeciesURL).then(res => res.data.name)
           character.species = [speciesRes]
          }else{
            character.species = 'Human'
@@ -106,12 +110,15 @@ class StarWarsPage extends Component {
   
         for(const character of pages) {
           const homeworldURL = character.homeworld
-          const homeworldRes = await axios.get(homeworldURL).then(res => res.data.name)
+          const newHomeworldURL = homeworldURL.replace("http", "https")
+          const homeworldRes = await axios.get(newHomeworldURL).then(res => res.data.name)
           character.homeworld = [homeworldRes]
           if(character.species.length !== 0){
-           const speciesURL = character.species;
-           const speciesRes = await axios.get(speciesURL).then(res => res.data.name)
-           character.species = [speciesRes]
+            const speciesURL = character.species;
+            const speciesURLstring = speciesURL.toString()
+            const newSpeciesURL = speciesURLstring.replace("http", "https")
+            const speciesRes = await axios.get(newSpeciesURL).then(res => res.data.name)
+            character.species = [speciesRes]
           }else{
             character.species = 'Human'
           }
