@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import Input from './Input.js';
-import SearchButton from './SearchButton.js';
 import Table from './Table.js';
 import axios from 'axios';
 import ButtonPageChange from './ButtonPageChange.js';
 
 
 
-class StarWarsPage extends Component {
+class App extends Component {
   constructor (props) {
     super(props);
 
@@ -44,7 +43,6 @@ class StarWarsPage extends Component {
        for(const character of page){
          const homeworldURL = character.homeworld
          const newHomeworldURL = homeworldURL.replace("http", "https")
-         console.log(newHomeworldURL)
          const homeworldRes = await axios.get(newHomeworldURL).then(res => res.data.name)
          character.homeworld = [homeworldRes]
          if(character.species.length !== 0){
@@ -70,7 +68,6 @@ class StarWarsPage extends Component {
   handleInputChange (e) {
     e.preventDefault();
     this.setState({input: e.target.value}) 
-    console.log(this.state.input)
   }
 
 
@@ -84,7 +81,7 @@ class StarWarsPage extends Component {
                        newCharacters: [],
                       characters: []})
       }
-      this.sendSearchRequest()
+      this.sendSearchRequest()  
     }
   }
 
@@ -165,25 +162,18 @@ class StarWarsPage extends Component {
         <div className='text-warning mt-5 w-75 border border-white rounded mx-auto'>
           <h1 className='d-flex justify-content-center display-3'>STAR WARS</h1>
           <form className='form'>
-           <Input onChange={this.handleInputChange} onClick={this.resetInputValue}/>
-           <SearchButton onClick={this.searchCharacter}/>
+           <Input searchInput={this.state.input} handleInputChange={this.handleInputChange} resetInputValue={this.resetInputValue}/>
+           <div className='d-flex justify-content-center m-3'>
+             <button onClick={this.searchCharacter} className='btn btn-warning text-white'>Search</button>
+            </div>
           </form>
         </div>
         <div className='text-white'>
-          {isLoaded ? <Table data={this.state.characters.map((char, i) => {
-            return(
-              <tr key={i}>
-                <td>{char.name}</td>
-                <td>{char.birth_year}</td>
-                <td>{char.height}</td>
-                <td>{char.mass}</td>
-                <td>{char.homeworld}</td>
-                <td>{char.species}</td>
-              </tr>
-         )})}/> : <div className='d-flex justify-content-center m-5'>Loading...</div>} 
+          {isLoaded ? <Table characters={this.state.characters}
+        /> : <div className='d-flex justify-content-center m-5'>Loading...</div>} 
        </div>
        <div>
-         <ButtonPageChange onClick={this.changePageCount} ></ButtonPageChange>
+         <ButtonPageChange changePageCount={this.changePageCount} />
        </div>
       </div>
     )
@@ -191,4 +181,4 @@ class StarWarsPage extends Component {
  }  
 
   
-export default StarWarsPage;
+export default App;

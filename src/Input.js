@@ -1,14 +1,13 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 
-class Input extends Component {
-  render () {
+const Input = (props) => {
     return (
       <div className='d-flex justify-content-center m-5'>
-        <input onChange={this.props.onChange} onClick={this.props.onClick} className='form-control-sm bg-warning'></input>
+        <input type='text' name='searchInput' value={props.searchInput} onChange={props.handleInputChange} onClick={props.resetInputValue} className='form-control-sm bg-warning' required></input>
       </div>
     )
-  }
 }
+
 
 export default Input;
