@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
      input : '',
      characters: [],
+     newCharacters: [],
      isLoaded: false
     }
 
@@ -77,9 +78,7 @@ class App extends Component {
       this.showPage(1)
     }else{
       if(this.state.isLoaded){
-        this.setState({isLoaded: false,
-                       newCharacters: [],
-                      characters: []})
+        this.setState({isLoaded: false})
       }
       this.sendSearchRequest()  
     }
@@ -121,10 +120,12 @@ class App extends Component {
           }
            
           if(character.name.toLowerCase().startsWith((this.state.input).toLowerCase()) == true && this.state.input !== ''){
-           
-          let characters = this.state.characters;
-          characters.push(character);
-          this.setState({characters: [...characters]})
+          let newCharacters = this.state.newCharacters;
+          newCharacters.unshift(character);
+          if(newCharacters.length > 10){
+            newCharacters.pop()
+          }
+          this.setState({characters: [...newCharacters]})
         }
       }   
         this.setState({isLoaded: true})
